@@ -1,4 +1,4 @@
-import type * as React from "react"
+import React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
@@ -46,10 +46,49 @@ function Button({
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean
   }) {
-  const Comp = asChild ? Slot : "button"
+  const classNames = cn(buttonVariants({ variant, size, className }))
+
+  // When using asChild / Slot, Radix requires exactly one child element.
+  // Clone the single child and inject our visual structure into it so
+  // Slot receives a single element and still includes the background span.
+  if (asChild) {
+    try {
+      const child = React.Children.only(children) as React.ReactElement
+      const childProps = (child.props || {}) as any
+
+      const cloned = React.cloneElement(
+        child,
+        {
+          ...childProps,
+          className: cn(classNames, childProps.className),
+          // preserve any existing props from the caller but allow our props to merge
+          ...(props || {}),
+        },
+        <>
+          {variant === "default" && (
+            <span className="absolute inset-0 bg-primary-foreground/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+          )}
+          <span className="relative z-10 flex items-center gap-2">{childProps.children}</span>
+        </>,
+      )
+
+      return (
+        <Slot data-slot="button" {...props}>
+          {cloned}
+        </Slot>
+      )
+    } catch (e) {
+      // If the consumer passed multiple children or a non-element, fall back to a regular button
+      // and render children normally to avoid breaking the app.
+      // eslint-disable-next-line no-console
+      console.warn("Button with asChild expects a single React element child. Falling back to a native button.", e)
+    }
+  }
+
+  const Comp = "button"
 
   return (
-    <Comp data-slot="button" className={cn(buttonVariants({ variant, size, className }))} {...props}>
+    <Comp data-slot="button" className={classNames} {...props}>
       {variant === "default" && (
         <span className="absolute inset-0 bg-primary-foreground/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300 ease-out" />
       )}

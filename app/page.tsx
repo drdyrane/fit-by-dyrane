@@ -15,7 +15,7 @@ import {
   Quote,
 } from "lucide-react"
 import { Navbar } from "@/components/shared/navbar"
-import { Footer } from "@/components/shared/footer"
+import Footer from "@/components/shared/footer"
 import Features from "@/components/landing/features"
 import { AbstractBackground } from "@/components/layout/abstract-background"
 import Stats from "@/components/landing/stats"
@@ -227,9 +227,8 @@ export default function HomePage() {
             </div>
           </div>
         </Section>
-
+        <Footer />
       </div>
-      <Footer />
     </div>
   )
 }

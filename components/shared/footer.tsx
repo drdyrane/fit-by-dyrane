@@ -1,148 +1,153 @@
+// components/shared/Footer.tsx
 "use client";
 
+import { motion } from "framer-motion";
 import Link from "next/link";
-import { Activity, Twitter, Github, Instagram } from "lucide-react";
-import { useState } from "react";
+import Image from "next/image";
+import { Github, Twitter, Linkedin, Activity, Apple, } from "lucide-react";
 
-export function Footer() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "subscribed" | "error">("idle");
+const footerLinks = [
+  {
+    title: "Product",
+    links: [
+      { name: "Features", href: "#features" },
+      { name: "Pricing", href: "#pricing" },
+      { name: "Download", href: "#download" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { name: "About", href: "#about" },
+      { name: "Blog", href: "#blog" },
+      { name: "Careers", href: "#careers" },
+    ],
+  },
+  {
+    title: "Support",
+    links: [
+      { name: "Help Center", href: "#help" },
+      { name: "Contact", href: "#contact" },
+      { name: "Privacy Policy", href: "#privacy" },
+    ],
+  },
+];
 
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    // UI-only demo: simulate subscribe
-    if (email.includes("@")) {
-      setStatus("subscribed");
-    } else {
-      setStatus("error");
-    }
-  };
-
+export default function Footer() {
   return (
-    <footer className="border-t py-12 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <div className="grid gap-8 md:grid-cols-4">
-          <div className="flex flex-col gap-4">
-            <Link href="/" className="flex items-center gap-2">
-              <Activity className="size-6 text-primary" />
-              <div className="flex flex-col">
-                <span className="text-lg font-bold text-foreground">Fit</span>
-                <span className="text-[10px] italic text-muted-foreground -mt-1">by Dyrane</span>
-              </div>
+    <footer className="relative border-t border-border/40 bg-background/50 backdrop-blur-sm">
+      <div className="container mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 text-sm text-muted-foreground">
+        
+        {/* Logo + Description */}
+        <motion.div
+          className="col-span-1 sm:col-span-2 md:col-span-1"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
+          <Link href="/" className="flex items-center gap-3 group">
+            <Activity className="size-7 text-primary transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
+            <div className="flex flex-col">
+              <span className="text-lg font-semibold text-foreground">Fit</span>
+              <span className="text-xs italic text-muted-foreground -mt-0.5">
+                by Dyrane
+              </span>
+            </div>
+          </Link>
+
+          <p className="mt-3 text-muted-foreground/80 max-w-sm leading-relaxed">
+            AI-powered wellness tracking for a healthier, smarter lifestyle.  
+            Track progress, set goals, and thrive every day.
+          </p>
+
+          {/* App / Partner Icons */}
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            {/* Apple */}
+            <Link href="#" aria-label="Apple App Store">
+              <Apple className="w-6 h-6 text-muted-foreground hover:text-foreground transition-colors" />
             </Link>
-            <p className="text-sm text-muted-foreground">AI-powered wellness tracking for a healthier you.</p>
-            <div className="flex items-center gap-3 pt-2">
-              <Link href="#" className="text-muted-foreground hover:text-foreground">
-                <Twitter className="size-5" />
-              </Link>
-              <Link href="#" className="text-muted-foreground hover:text-foreground">
-                <Github className="size-5" />
-              </Link>
-              <Link href="#" className="text-muted-foreground hover:text-foreground">
-                <Instagram className="size-5" />
-              </Link>
-            </div>
+            {/* Google */}
+            <Link href="#" aria-label="Google Play Store">
+              <Apple  className="w-6 h-6 text-muted-foreground hover:text-foreground transition-colors" />
+            </Link>
+            {/* Fallback Logos */}
+            <Image
+              src="/placeholder-logo.png"
+              alt="Partner"
+              width={60}
+              height={24}
+              className="h-6 w-auto opacity-80 hover:opacity-100 transition-opacity"
+            />
           </div>
-          <div>
-            <h4 className="font-semibold text-sm text-foreground mb-4">Product</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link href="#testimonials" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Testimonials
-                </Link>
-              </li>
-              <li>
-                <Link href="#how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  How it works
-                </Link>
-              </li>
+        </motion.div>
+
+        {/* Link Groups */}
+        {footerLinks.map((group, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
+            viewport={{ once: true }}
+          >
+            <h4 className="font-semibold mb-4 text-foreground">{group.title}</h4>
+            <ul className="grid grid-cols-3 sm:grid-cols-1 gap-2">
+              {group.links.map((link, j) => (
+                <li key={j}>
+                  <Link
+                    href={link.href}
+                    className="hover:text-foreground transition-colors duration-200"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold text-sm text-foreground mb-4">Company</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About</Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Careers</Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold text-sm text-foreground mb-4">Legal</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy</Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms</Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Security</Link>
-              </li>
-              <li>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Compliance</Link>
-              </li>
-            </ul>
-          </div>
-        </div>
+          </motion.div>
+        ))}
+      </div>
 
-        <div className="mt-8">
-          <div className="flex items-center justify-between gap-6 mb-6 flex-col md:flex-row">
-            <div className="flex items-center gap-4">
-              <div className="px-3 py-2 rounded bg-muted/20 text-sm">Trusted by</div>
-              <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                <div className="px-2 py-1 rounded bg-muted/10">HealthOrg</div>
-                <div className="px-2 py-1 rounded bg-muted/10">GymPro</div>
-                <div className="px-2 py-1 rounded bg-muted/10">WellnessLabs</div>
-              </div>
-            </div>
-            <div className="text-sm text-muted-foreground">Integrations: Apple Health, Google Fit, CSV export</div>
-          </div>
+      {/* Divider */}
+      <div className="border-t border-border/40 mt-10" />
 
-          <div className="grid gap-6 md:grid-cols-3 items-center">
-            <div className="flex flex-col gap-2">
-              <h4 className="font-semibold text-sm text-foreground">Get started</h4>
-              <p className="text-sm text-muted-foreground">Create your free account and start tracking in minutes.</p>
-              <Link href="/auth/sign-up" className="inline-flex items-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white mt-2">Create free account</Link>
-            </div>
+      {/* Bottom Bar */}
+      <div
+        className="
+        container mx-auto px-6 py-6 
+        flex flex-col sm:flex-row items-center justify-between 
+        text-xs text-muted-foreground/80 gap-3
+      "
+      >
+        <p className="text-center sm:text-left">
+          © {new Date().getFullYear()} Fit by Dyrane. All rights reserved.
+        </p>
 
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-2">Subscribe to our newsletter for product updates</p>
-              <form onSubmit={handleSubscribe} className="mx-auto max-w-md flex items-center gap-2">
-                <input
-                  type="email"
-                  aria-label="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@domain.com"
-                  className="flex-1 rounded-lg border border-input bg-transparent px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground"
-                />
-                <button className="rounded-lg bg-primary px-4 py-2 text-sm text-primary-foreground">Subscribe</button>
-              </form>
-              {status === "subscribed" && <p className="text-sm text-success mt-2">Thanks for subscribing!</p>}
-              {status === "error" && <p className="text-sm text-destructive mt-2">Please enter a valid email.</p>}
-            </div>
-
-            <div className="text-right text-sm text-muted-foreground">&copy; 2025 Fit by Dyrane. All rights reserved.</div>
-          </div>
+        <div className="flex gap-5">
+          <motion.a
+            whileHover={{ scale: 1.1 }}
+            href="#"
+            aria-label="Twitter"
+            className="hover:text-foreground transition-colors"
+          >
+            <Twitter className="w-4 h-4" />
+          </motion.a>
+          <motion.a
+            whileHover={{ scale: 1.1 }}
+            href="#"
+            aria-label="LinkedIn"
+            className="hover:text-foreground transition-colors"
+          >
+            <Linkedin className="w-4 h-4" />
+          </motion.a>
+          <motion.a
+            whileHover={{ scale: 1.1 }}
+            href="#"
+            aria-label="GitHub"
+            className="hover:text-foreground transition-colors"
+          >
+            <Github className="w-4 h-4" />
+          </motion.a>
         </div>
       </div>
     </footer>

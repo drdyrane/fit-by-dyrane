@@ -167,7 +167,7 @@ export function AbstractBackground({
             ref={containerRef}
             aria-hidden="true"
             className={cn(
-                "pointer-events-none absolute inset-0 h-full w-full -z-20 isolate",
+                "pointer-events-none absolute inset-0 h-full w-full -z-20 isolate hidden sm:flex",
                 className
             )}
         >

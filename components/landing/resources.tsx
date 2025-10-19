@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 
 import Section from "@/components/landing/section";
+import HeroTrust from "@/components/landing/hero/hero-trust";
 
 export default function Resources() {
   return (
@@ -12,6 +13,10 @@ export default function Resources() {
         <Link href="#" className="p-4 rounded-lg bg-card/40">Developer docs</Link>
         <Link href="#" className="p-4 rounded-lg bg-card/40">Guides & tutorials</Link>
         <Link href="#" className="p-4 rounded-lg bg-card/40">Design system</Link>
+      </div>
+
+      <div className="mt-8">
+        <HeroTrust />
       </div>
     </Section>
   );

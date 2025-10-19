@@ -15,6 +15,7 @@ const features = [
 ];
 
 import Section from "@/components/landing/section";
+import HeroCTA from "@/components/landing/hero/hero-cta";
 
 export default function Features() {
   return (
@@ -26,7 +27,7 @@ export default function Features() {
           <li>Privacy-first, secure by design</li>
         </ul>
         <div>
-          <a href="/auth/sign-up" className="inline-flex items-center rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white shadow hover:brightness-95 transition">Get started — it's free</a>
+          <HeroCTA />
         </div>
       </div>
 

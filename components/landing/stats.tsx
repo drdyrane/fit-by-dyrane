@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 
 import Section from "@/components/landing/section";
 
@@ -14,10 +15,10 @@ export default function Stats() {
     <Section id="stats" eyebrow="Built for results" title="Numbers that show the impact">
       <div className="mx-auto max-w-4xl grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
         {stats.map((s, i) => (
-          <div key={i} className="bg-card/40 rounded-2xl p-6">
+          <motion.div key={i} initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ type: 'spring', stiffness: 200, damping: 22 }} className="bg-card/40 rounded-2xl p-6">
             <div className="text-4xl md:text-5xl font-extrabold text-foreground">{s.value}</div>
             <div className="text-sm text-muted-foreground mt-2">{s.label}</div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </Section>

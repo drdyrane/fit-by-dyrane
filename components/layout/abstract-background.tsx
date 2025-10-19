@@ -194,7 +194,8 @@ export function AbstractBackground({
                             transition: {
                                 duration: 2,
                                 repeat: Infinity,
-                                ease: "easeInOut",
+                                // use numeric easing acceptable to framer-motion's types
+                                ease: [0.42, 0, 0.58, 1],
                             },
                         }}
                         width={gridSize * 2.5}
@@ -224,7 +225,8 @@ export function AbstractBackground({
                             repeat: Infinity,
                             delay: index * (repeatDelay / numSquares) + Math.random() * repeatDelay,
                             repeatType: "reverse",
-                            ease: "easeInOut",
+                            // numeric easing array instead of string
+                            ease: [0.42, 0, 0.58, 1],
                         }}
                         width={gridSize - 1}
                         height={gridSize - 1}
@@ -258,7 +260,7 @@ export function AbstractBackground({
                     transition: {
                         duration: 4,
                         repeat: Infinity,
-                        ease: "easeInOut",
+                        ease: [0.42, 0, 0.58, 1],
                     },
                 }}
                 width={gridSize * 2.5}
@@ -274,20 +276,20 @@ export function AbstractBackground({
                 <motion.rect
                     key="mouse-square"
                     initial={{ opacity: 0, scale: 1, rotate: 0 }}
-                    animate={{
+                        animate={{
                         scale: [1, 1.05, 1],
                         rotate: [0, 1.5, -1.5, 0],
                         transition: {
                             scale: {
                                 duration: 2,
                                 repeat: Infinity,
-                                ease: "easeInOut"
+                                ease: [0.42, 0, 0.58, 1],
                             },
                             rotate: {
                                 duration: 3,
                                 repeat: Infinity,
-                                ease: "easeInOut"
-                            }
+                                ease: [0.42, 0, 0.58, 1],
+                            },
                         }
                     }}
                     style={{

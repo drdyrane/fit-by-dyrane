@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import AnimatedBadge from "@/components/landing/animated-badge";
 
 interface SectionProps {
   id?: string;
@@ -15,11 +16,7 @@ export default function Section({ id, className = "", title, subtitle, eyebrow, 
       <div className="container mx-auto px-4">
         {(title || subtitle || eyebrow) && (
           <div className="mx-auto max-w-3xl text-center mb-6">
-            {eyebrow && (
-              <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium text-primary bg-primary/5 backdrop-blur-sm border border-primary/10 mb-3">
-                {eyebrow}
-              </div>
-            )}
+            {eyebrow && <AnimatedBadge>{eyebrow}</AnimatedBadge>}
 
             {title && (
               <div className="inline-block px-4 py-2 rounded-2xl bg-card/60 backdrop-blur-md">

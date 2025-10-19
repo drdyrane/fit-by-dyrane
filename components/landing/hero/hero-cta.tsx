@@ -1,17 +1,29 @@
+// components/landing/hero-cta.tsx
 "use client";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import React from "react";
 
+// Framer Motion variants for buttons
 const buttonHover = { scale: 1.05, boxShadow: "0px 8px 15px rgba(0,0,0,0.12)" };
 const buttonTap = { scale: 0.98 };
 
+// Individual item variant for staggered animation
+const ctaItemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.3 } },
+};
+
+
 export function HeroCTA() {
   return (
-    <motion.div className="flex flex-col gap-4 sm:flex-row sm:justify-center mb-12 relative z-10" variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <motion.div
+        className="flex flex-col gap-4 sm:flex-row sm:justify-center mb-12 relative z-10"
+        variants={ctaItemVariants} // Apply item variant to the whole group for a staggered appearance after heading/description
+    >
       <motion.div whileHover={buttonHover} whileTap={buttonTap}>
         <Button asChild size="lg" className="text-base relative overflow-hidden group font-semibold shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out">
           <Link href="/auth/sign-up">
@@ -33,4 +45,4 @@ export function HeroCTA() {
   );
 }
 
-export default HeroCTA;
+export default HeroCTA; // Default export

@@ -16,7 +16,6 @@ import {
 } from "lucide-react"
 import { Navbar } from "@/components/shared/navbar"
 import { Footer } from "@/components/shared/footer"
-import Hero from "@/components/landing/hero"
 import Features from "@/components/landing/features"
 import { AbstractBackground } from "@/components/layout/abstract-background"
 import Stats from "@/components/landing/stats"
@@ -26,6 +25,7 @@ import Integrations from "@/components/landing/integrations"
 import Resources from "@/components/landing/resources"
 import Contact from "@/components/landing/contact"
 import Section from "@/components/landing/section"
+import HeroSection from "@/components/landing/hero/HeroSection"
 
 export default function HomePage() {
   return (
@@ -34,13 +34,13 @@ export default function HomePage() {
         <Navbar />
 
         {/* Hero + Features (client components) */}
-        <Hero />
+        <HeroSection />
         <About />
         <Features />
         <Integrations />
 
         {/* How It Works Section */}
-        <Section id="how-it-works" className="bg-muted/30 relative" title="Get started in minutes" subtitle="Simple onboarding process to personalize your wellness journey">
+  <Section id="how-it-works" className="bg-muted/30 relative" eyebrow="How it works" title="Get started in minutes" subtitle="Simple onboarding process to personalize your wellness journey">
           <AbstractBackground className="pointer-events-none -z-20" />
           <div className="mx-auto max-w-4xl grid gap-8 md:grid-cols-3">
             {[
@@ -77,7 +77,7 @@ export default function HomePage() {
         </Section>
 
         {/* Testimonials Section */}
-        <Section id="testimonials" title="Loved by wellness enthusiasts" subtitle="Join thousands of people transforming their health journey">
+  <Section id="testimonials" eyebrow="Loved" title="Loved by wellness enthusiasts" subtitle="Join thousands of people transforming their health journey">
           <AbstractBackground className="pointer-events-none -z-20" />
           <div className="mx-auto max-w-6xl grid gap-6 md:grid-cols-3">
             {[
@@ -131,7 +131,7 @@ export default function HomePage() {
         </Section>
 
         {/* Pricing Section */}
-        <Section id="pricing" className="bg-muted/30 relative" title="Simple, transparent pricing" subtitle="Start free, upgrade when you need more">
+  <Section id="pricing" className="bg-muted/30 relative" eyebrow="Pricing" title="Simple, transparent pricing" subtitle="Start free, upgrade when you need more">
           <div className="mx-auto max-w-5xl grid gap-8 md:grid-cols-2">
             <Card className="border-border bg-card hover-lift">
               <CardContent className="flex flex-col gap-6 p-8">
@@ -212,9 +212,8 @@ export default function HomePage() {
         {/* Final CTA Section */}
         <Contact />
 
-        <Section className="relative overflow-hidden" title="Ready to transform your wellness journey?" subtitle="Join thousands of people taking control of their health with AI-powered insights">
+        <Section className="relative overflow-hidden" eyebrow="Final call" title="Ready to transform your wellness journey?" subtitle="Join thousands of people taking control of their health with AI-powered insights">
           <AbstractBackground className="pointer-events-none -z-20" />
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 animate-gradient-drift" />
           <div className="container relative mx-auto px-4">
             <div className="mx-auto max-w-3xl text-center">
               <Button asChild size="lg" className="text-base relative overflow-hidden group">

@@ -458,3 +458,23 @@
   transform: translateZ(20px);
   will-change: transform;
 }
+
+/* Adding left→right gradient slide animation for hover effects */
+@keyframes gradientSlide {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Utility class for gradient slide on hover */
+.hover-gradient-slide {
+  background-size: 200% auto;
+  transition: background-position 0.5s ease-out;
+}
+
+.hover-gradient-slide:hover {
+  animation: gradientSlide 0.5s forwards;
+}

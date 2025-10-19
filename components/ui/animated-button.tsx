@@ -43,6 +43,82 @@ const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
     const Comp = asChild ? Slot : "button"
     const [isHovered, setIsHovered] = React.useState(false)
 
+    // This ensures Slot receives exactly one React element
+    if (asChild && React.isValidElement(children)) {
+      return (
+        <Comp
+          ref={ref}
+          className={cn(animatedButtonVariants({ variant, size, className }))}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          {...props}
+        >
+          {React.cloneElement(children as React.ReactElement, {
+            children: (
+              <>
+                {/* Gradient sweep effect on hover */}
+                {variant === "default" && (
+                  <span
+                    className={cn(
+                      "absolute inset-0 bg-gradient-to-r from-primary-foreground/0 via-primary-foreground/10 to-primary-foreground/0 transition-transform duration-500 ease-out",
+                      isHovered ? "translate-x-0" : "-translate-x-full",
+                    )}
+                  />
+                )}
+
+                {/* Glow pulse effect */}
+                {variant === "default" && (
+                  <span
+                    className={cn(
+                      "absolute inset-0 rounded-2xl transition-opacity duration-300",
+                      isHovered ? "opacity-100" : "opacity-0",
+                    )}
+                    style={{
+                      boxShadow: "0 0 20px oklch(0.65 0.18 145 / 0.4), 0 0 40px oklch(0.65 0.18 145 / 0.2)",
+                    }}
+                  />
+                )}
+
+                {/* Content wrapper with icon */}
+                <span className="relative z-10 flex items-center gap-2">
+                  {icon && iconPosition === "left" && (
+                    <span
+                      className={cn(
+                        "transition-transform duration-150 ease-out",
+                        isHovered && iconPosition === "left" && "-translate-x-1",
+                      )}
+                    >
+                      {icon}
+                    </span>
+                  )}
+
+                  <span
+                    className={cn(
+                      "transition-transform duration-150 ease-out",
+                      isHovered && icon && iconPosition === "right" && "translate-x-0.5",
+                    )}
+                  >
+                    {(children as React.ReactElement).props.children}
+                  </span>
+
+                  {icon && iconPosition === "right" && (
+                    <span
+                      className={cn(
+                        "transition-transform duration-150 ease-out",
+                        isHovered && iconPosition === "right" && "translate-x-1",
+                      )}
+                    >
+                      {icon}
+                    </span>
+                  )}
+                </span>
+              </>
+            ),
+          })}
+        </Comp>
+      )
+    }
+
     return (
       <Comp
         ref={ref}

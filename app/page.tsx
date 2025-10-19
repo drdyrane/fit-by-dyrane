@@ -31,6 +31,8 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <div className="relative z-10">
+        <AbstractBackground className="pointer-events-none -z-20" />
+
         <Navbar />
 
         {/* Hero + Features (client components) */}
@@ -40,8 +42,7 @@ export default function HomePage() {
         <Integrations />
 
         {/* How It Works Section */}
-  <Section id="how-it-works" className="bg-muted/30 relative" eyebrow="How it works" title="Get started in minutes" subtitle="Simple onboarding process to personalize your wellness journey">
-          <AbstractBackground className="pointer-events-none -z-20" />
+        <Section id="how-it-works" className="bg-muted/30 relative" eyebrow="How it works" title="Get started in minutes" subtitle="Simple onboarding process to personalize your wellness journey">
           <div className="mx-auto max-w-4xl grid gap-8 md:grid-cols-3">
             {[
               {
@@ -77,8 +78,7 @@ export default function HomePage() {
         </Section>
 
         {/* Testimonials Section */}
-  <Section id="testimonials" eyebrow="Loved" title="Loved by wellness enthusiasts" subtitle="Join thousands of people transforming their health journey">
-          <AbstractBackground className="pointer-events-none -z-20" />
+        <Section id="testimonials" eyebrow="Loved" title="Loved by wellness enthusiasts" subtitle="Join thousands of people transforming their health journey">
           <div className="mx-auto max-w-6xl grid gap-6 md:grid-cols-3">
             {[
               {
@@ -131,7 +131,7 @@ export default function HomePage() {
         </Section>
 
         {/* Pricing Section */}
-  <Section id="pricing" className="bg-muted/30 relative" eyebrow="Pricing" title="Simple, transparent pricing" subtitle="Start free, upgrade when you need more">
+        <Section id="pricing" className="bg-muted/30 relative" eyebrow="Pricing" title="Simple, transparent pricing" subtitle="Start free, upgrade when you need more">
           <div className="mx-auto max-w-5xl grid gap-8 md:grid-cols-2">
             <Card className="border-border bg-card hover-lift">
               <CardContent className="flex flex-col gap-6 p-8">
@@ -213,7 +213,6 @@ export default function HomePage() {
         <Contact />
 
         <Section className="relative overflow-hidden" eyebrow="Final call" title="Ready to transform your wellness journey?" subtitle="Join thousands of people taking control of their health with AI-powered insights">
-          <AbstractBackground className="pointer-events-none -z-20" />
           <div className="container relative mx-auto px-4">
             <div className="mx-auto max-w-3xl text-center">
               <Button asChild size="lg" className="text-base relative overflow-hidden group">

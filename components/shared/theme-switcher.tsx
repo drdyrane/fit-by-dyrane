@@ -1,39 +1,62 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Moon, Sun, Monitor } from "lucide-react"
 import { useTheme } from "./theme-provider"
+import { Moon, Sun } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
 
 export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+  if (!mounted) return null
+
+  const isDark = theme === "dark"
+
+  const toggleTheme = () => {
+    setTheme(isDark ? "light" : "dark")
+  }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="size-9">
-          <Sun className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")} className="cursor-pointer">
-          <Sun className="mr-2 size-4" />
-          <span>Light</span>
-          {theme === "light" && <span className="ml-auto text-xs">✓</span>}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")} className="cursor-pointer">
-          <Moon className="mr-2 size-4" />
-          <span>Dark</span>
-          {theme === "dark" && <span className="ml-auto text-xs">✓</span>}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")} className="cursor-pointer">
-          <Monitor className="mr-2 size-4" />
-          <span>System</span>
-          {theme === "system" && <span className="ml-auto text-xs">✓</span>}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={toggleTheme}
+      aria-label="Toggle theme"
+      className="
+        relative w-16 h-8 p-1 rounded-full
+        bg-muted transition-colors flex items-center
+        border border-border
+      "
+    >
+      {/* Slider */}
+      <span
+        className={`
+          absolute top-1 left-1 w-6 h-6 rounded-full shadow-sm
+          bg-background
+          transition-transform duration-300 ease-in-out
+          ${isDark ? "translate-x-8" : "translate-x-0"}
+        `}
+      />
+
+      {/* Sun Icon */}
+      <Sun
+        className={`
+          absolute left-2 w-4 h-4
+          text-primary transition-opacity duration-300
+          ${isDark ? "opacity-20" : "opacity-100"}
+        `}
+      />
+
+      {/* Moon Icon */}
+      <Moon
+        className={`
+          absolute right-2 w-4 h-4
+          text-foreground transition-opacity duration-300
+          ${isDark ? "opacity-100" : "opacity-20"}
+        `}
+      />
+    </Button>
   )
 }

@@ -7,13 +7,18 @@ interface SectionProps {
   title?: string;
   subtitle?: string;
   eyebrow?: string;
+  full?: boolean; // make this section min-h-screen
+  center?: boolean; // center content vertically
   children?: ReactNode;
 }
 
-export default function Section({ id, className = "", title, subtitle, eyebrow, children }: SectionProps) {
+export default function Section({ id, className = "", title, subtitle, eyebrow, full = false, center = false, children }: SectionProps) {
+  const baseClass = `${full ? "min-h-screen py-20 md:py-28" : "py-24 md:py-32"} ${className}`;
+  const innerClass = `${center ? "flex items-center justify-center" : ""}`;
+
   return (
-    <section id={id} className={`py-24 md:py-32 ${className}`}>
-      <div className="container mx-auto px-4">
+    <section id={id} className={baseClass}>
+      <div className={`container mx-auto px-4 ${innerClass}`}>
         {(title || subtitle || eyebrow) && (
           <div className="mx-auto max-w-3xl text-center mb-6">
             {eyebrow && <AnimatedBadge>{eyebrow}</AnimatedBadge>}

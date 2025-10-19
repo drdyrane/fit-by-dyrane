@@ -8,11 +8,18 @@ const faqs = [
   { q: "Can I export my data?", a: "Yes — export CSVs or connect with integrations like Apple Health." },
 ];
 
-import Section from "@/components/landing/section";
+// Section wrapper removed: this component now returns content-only. Page controls layout.
 
-export default function FAQ() {
+interface FAQProps {
+  id?: string;
+  className?: string;
+  full?: boolean;
+  center?: boolean;
+}
+
+export default function FAQ({ id, className }: FAQProps) {
   return (
-    <Section id="faq" className="bg-muted/10" title="Frequently asked questions" subtitle="Answers to common questions about Fit by Dyrane.">
+    <div id={id ?? "faq"} className={className ?? "bg-muted/10"}>
       <div className="mx-auto max-w-4xl grid gap-4">
         {faqs.map((f, i) => (
           <details key={i} className="p-4 rounded-lg bg-card">
@@ -21,6 +28,6 @@ export default function FAQ() {
           </details>
         ))}
       </div>
-    </Section>
+    </div>
   );
 }

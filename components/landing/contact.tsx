@@ -3,15 +3,22 @@
 import React from "react";
 import Link from "next/link";
 
-import Section from "@/components/landing/section";
+// Section wrapper removed; content-only component.
 import HeroCTA from "@/components/landing/hero/hero-cta";
 
-export default function Contact() {
+interface ContactProps {
+  id?: string;
+  className?: string;
+  full?: boolean;
+  center?: boolean;
+}
+
+export default function Contact({ id, className }: ContactProps) {
   return (
-    <Section id="contact" className="bg-muted/10" title="Contact & Support" subtitle="Questions? We're here to help — reach out or visit our support center.">
+    <div id={id ?? "contact"} className={className ?? "bg-muted/10"}>
       <div className="mx-auto max-w-4xl text-center">
         <HeroCTA />
       </div>
-    </Section>
+    </div>
   );
 }

@@ -177,10 +177,10 @@ export function AbstractBackground({
                     <path d={`M0 0 H${gridSize - 1}`} fill="none" stroke={lineColor} strokeWidth={1} strokeDasharray={strokeDasharray} strokeLinecap="butt" />
                 </pattern>
 
-                <radialGradient id={maskId} cx="50%" cy="50%" r="45%" fx="50%" fy="50%">
+                {/* <radialGradient id={maskId} cx="50%" cy="50%" r="45%" fx="50%" fy="50%">
                     <stop offset="0%" stopColor="white" stopOpacity="1" />
                     <stop offset="100%" stopColor="white" stopOpacity="0" />
-                </radialGradient>
+                </radialGradient> */}
 
                 <mask id={fadeMaskId}>
                     <rect width="100%" height="100%" fill={`url(#${maskId})`} />

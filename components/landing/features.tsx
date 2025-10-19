@@ -14,12 +14,18 @@ const features = [
   { icon: Zap, title: "Lightning Fast", description: "Optimized performance ensures smooth experience across all devices and platforms", color: "from-warning to-accent" },
 ];
 
-import Section from "@/components/landing/section";
+
+interface FeaturesProps {
+  id?: string;
+  className?: string;
+  full?: boolean;
+  center?: boolean;
+}
 import HeroCTA from "@/components/landing/hero/hero-cta";
 
-export default function Features() {
+export default function Features({ id, className, full, center }: FeaturesProps) {
   return (
-    <Section id="features" title="Everything you need to thrive" subtitle="Powerful features designed to make wellness tracking effortless and insightful">
+    <div id={id ?? "features"} className={className}>
       <div className="mx-auto max-w-xl flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
         <ul className="text-sm text-muted-foreground space-y-2 sm:space-y-0 sm:space-x-6">
           <li>Quick logging & minimal friction</li>
@@ -49,6 +55,6 @@ export default function Features() {
           </motion.div>
         ))}
       </div>
-    </Section>
+    </div>
   );
 }

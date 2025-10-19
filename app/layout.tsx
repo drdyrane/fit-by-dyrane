@@ -1,12 +1,13 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter, Geist_Mono } from "next/font/google"
+import { Poppins, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/shared/theme-provider"
 import "./globals.css"
 
-const inter = Inter({
+const poppins = Poppins({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-sans",
   display: "swap",
 })
@@ -26,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${poppins.variable} font-sans antialiased`}>
         <ThemeProvider defaultTheme="system" storageKey="fit-by-dyrane-theme">
           {children}
         </ThemeProvider>

@@ -23,7 +23,7 @@ export function Navbar() {
     <header
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
-        isScrolled ? "glass border-b border-border/50 shadow-lg" : "bg-transparent",
+        isScrolled ? "glass border-b border-border/50 shadow-lg" : "bg-transparent backdrop-blur-md",
       )}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">

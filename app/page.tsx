@@ -15,161 +15,33 @@ import {
   Quote,
 } from "lucide-react"
 import { Navbar } from "@/components/shared/navbar"
+import { Footer } from "@/components/shared/footer"
+import Hero from "@/components/landing/hero"
+import Features from "@/components/landing/features"
+import { AbstractBackground } from "@/components/layout/abstract-background"
+import Stats from "@/components/landing/stats"
+import FAQ from "@/components/landing/faq"
+import About from "@/components/landing/about"
+import Integrations from "@/components/landing/integrations"
+import Resources from "@/components/landing/resources"
+import Contact from "@/components/landing/contact"
+import Section from "@/components/landing/section"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      <div className="relative z-10">
+        <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        {/* Animated gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 animate-gradient-drift" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
+        {/* Hero + Features (client components) */}
+        <Hero />
+        <About />
+        <Features />
+        <Integrations />
 
-        <div className="container relative mx-auto px-4 py-24 md:py-32 lg:py-40">
-          <div className="mx-auto max-w-4xl text-center">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary mb-8 animate-bounce-in">
-              <Sparkles className="size-4" />
-              AI-Powered Wellness Tracking
-            </div>
-
-            {/* Headline */}
-            <h1 className="text-balance text-5xl font-bold tracking-tight text-foreground md:text-6xl lg:text-7xl mb-6 animate-bounce-in">
-              Your Health Journey,
-              <br />
-              <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
-                Intelligently Simplified
-              </span>
-            </h1>
-
-            {/* Subheadline */}
-            <p className="mx-auto max-w-2xl text-pretty text-lg text-muted-foreground md:text-xl leading-relaxed mb-10">
-              Track metrics, set goals, and receive personalized AI insights—all in one beautiful, privacy-first
-              platform designed for your wellness success.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center mb-12">
-              <Button asChild size="lg" className="text-base relative overflow-hidden group">
-                <Link href="/auth/sign-up">
-                  <span className="relative z-10 flex items-center gap-2">
-                    Get Started Free
-                    <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="text-base bg-transparent">
-                <Link href="#features">Learn More</Link>
-              </Button>
-            </div>
-
-            {/* Social Proof */}
-            <div className="flex items-center justify-center gap-8 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-4 text-success" />
-                <span>No credit card required</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-4 text-success" />
-                <span>Free forever plan</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" className="py-24 md:py-32">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-2xl text-center mb-16">
-            <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground md:text-5xl mb-6">
-              Everything you need to thrive
-            </h2>
-            <p className="text-pretty text-lg text-muted-foreground leading-relaxed">
-              Powerful features designed to make wellness tracking effortless and insightful
-            </p>
-          </div>
-
-          <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                icon: Activity,
-                title: "Smart Tracking",
-                description:
-                  "Log weight, steps, nutrition, sleep, and mood in seconds with intelligent auto-suggestions",
-                color: "from-primary to-accent",
-              },
-              {
-                icon: Brain,
-                title: "AI Insights",
-                description: "Get personalized recommendations and pattern recognition powered by advanced AI",
-                color: "from-accent to-secondary",
-              },
-              {
-                icon: Target,
-                title: "Goal Setting",
-                description:
-                  "Define targets and track progress with beautiful visualizations and milestone celebrations",
-                color: "from-secondary to-warning",
-              },
-              {
-                icon: BarChart3,
-                title: "Analytics",
-                description: "Understand your health trends with comprehensive charts and weekly summaries",
-                color: "from-primary to-secondary",
-              },
-              {
-                icon: Shield,
-                title: "Privacy First",
-                description: "Your data stays yours, secured with enterprise-grade encryption and zero tracking",
-                color: "from-accent to-primary",
-              },
-              {
-                icon: Zap,
-                title: "Lightning Fast",
-                description: "Optimized performance ensures smooth experience across all devices and platforms",
-                color: "from-warning to-accent",
-              },
-            ].map((feature, index) => (
-              <Card
-                key={index}
-                className="border-border bg-card hover-lift cursor-pointer group relative overflow-hidden"
-              >
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
-                />
-                <CardContent className="flex flex-col items-start gap-4 p-6">
-                  <div
-                    className={`flex size-12 items-center justify-center rounded-xl bg-gradient-to-br ${feature.color} p-0.5`}
-                  >
-                    <div className="flex size-full items-center justify-center rounded-[10px] bg-card">
-                      <feature.icon className="size-6 text-primary" />
-                    </div>
-                  </div>
-                  <h3 className="font-semibold text-lg text-card-foreground">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section id="how-it-works" className="py-24 md:py-32 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-2xl text-center mb-16">
-            <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground md:text-5xl mb-6">
-              Get started in minutes
-            </h2>
-            <p className="text-pretty text-lg text-muted-foreground leading-relaxed">
-              Simple onboarding process to personalize your wellness journey
-            </p>
-          </div>
-
+        {/* How It Works Section */}
+        <Section id="how-it-works" className="bg-muted/30 relative" title="Get started in minutes" subtitle="Simple onboarding process to personalize your wellness journey">
+          <AbstractBackground className="pointer-events-none -z-20" />
           <div className="mx-auto max-w-4xl grid gap-8 md:grid-cols-3">
             {[
               {
@@ -202,21 +74,11 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </Section>
 
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-24 md:py-32">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-2xl text-center mb-16">
-            <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground md:text-5xl mb-6">
-              Loved by wellness enthusiasts
-            </h2>
-            <p className="text-pretty text-lg text-muted-foreground leading-relaxed">
-              Join thousands of people transforming their health journey
-            </p>
-          </div>
-
+        {/* Testimonials Section */}
+        <Section id="testimonials" title="Loved by wellness enthusiasts" subtitle="Join thousands of people transforming their health journey">
+          <AbstractBackground className="pointer-events-none -z-20" />
           <div className="mx-auto max-w-6xl grid gap-6 md:grid-cols-3">
             {[
               {
@@ -266,21 +128,10 @@ export default function HomePage() {
               </Card>
             ))}
           </div>
-        </div>
-      </section>
+        </Section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-24 md:py-32 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-2xl text-center mb-16">
-            <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground md:text-5xl mb-6">
-              Simple, transparent pricing
-            </h2>
-            <p className="text-pretty text-lg text-muted-foreground leading-relaxed">
-              Start free, upgrade when you need more
-            </p>
-          </div>
-
+        {/* Pricing Section */}
+        <Section id="pricing" className="bg-muted/30 relative" title="Simple, transparent pricing" subtitle="Start free, upgrade when you need more">
           <div className="mx-auto max-w-5xl grid gap-8 md:grid-cols-2">
             <Card className="border-border bg-card hover-lift">
               <CardContent className="flex flex-col gap-6 p-8">
@@ -349,122 +200,38 @@ export default function HomePage() {
               </CardContent>
             </Card>
           </div>
-        </div>
-      </section>
+        </Section>
 
-      {/* Final CTA Section */}
-      <section className="relative overflow-hidden py-24 md:py-32">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 animate-gradient-drift" />
-        <div className="container relative mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground md:text-5xl mb-6">
-              Ready to transform your wellness journey?
-            </h2>
-            <p className="text-pretty text-lg text-muted-foreground leading-relaxed mb-10">
-              Join thousands of people taking control of their health with AI-powered insights
-            </p>
-            <Button asChild size="lg" className="text-base relative overflow-hidden group">
-              <Link href="/auth/sign-up">
-                <span className="relative z-10 flex items-center gap-2">
-                  Create Your Free Account
-                  <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+        {/* Stats Section */}
+        <Stats />
 
-      {/* Footer */}
-      <footer className="border-t py-12 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="grid gap-8 md:grid-cols-4">
-            <div className="flex flex-col gap-4">
-              <Link href="/" className="flex items-center gap-2">
-                <Activity className="size-6 text-primary" />
-                <div className="flex flex-col">
-                  <span className="text-lg font-bold text-foreground">Fit</span>
-                  <span className="text-[10px] italic text-muted-foreground -mt-1">by Dyrane</span>
-                </div>
-              </Link>
-              <p className="text-sm text-muted-foreground">AI-powered wellness tracking for a healthier you.</p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-sm text-foreground mb-4">Product</h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="#features"
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Features
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#pricing"
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Pricing
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#testimonials"
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Testimonials
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-sm text-foreground mb-4">Company</h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Contact
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-sm text-foreground mb-4">Legal</h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Privacy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Terms
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    Security
-                  </Link>
-                </li>
-              </ul>
+        {/* FAQ Section */}
+        <FAQ />
+        <Resources />
+
+        {/* Final CTA Section */}
+        <Contact />
+
+        <Section className="relative overflow-hidden" title="Ready to transform your wellness journey?" subtitle="Join thousands of people taking control of their health with AI-powered insights">
+          <AbstractBackground className="pointer-events-none -z-20" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 animate-gradient-drift" />
+          <div className="container relative mx-auto px-4">
+            <div className="mx-auto max-w-3xl text-center">
+              <Button asChild size="lg" className="text-base relative overflow-hidden group">
+                <Link href="/auth/sign-up">
+                  <span className="relative z-10 flex items-center gap-2">
+                    Create Your Free Account
+                    <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </Link>
+              </Button>
             </div>
           </div>
-          <div className="mt-12 pt-8 border-t border-border text-center text-sm text-muted-foreground">
-            <p>&copy; 2025 Fit by Dyrane. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+        </Section>
+
+      </div>
+      <Footer />
     </div>
   )
 }

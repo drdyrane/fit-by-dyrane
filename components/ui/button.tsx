@@ -1,4 +1,4 @@
-import React from "react"
+import React, { forwardRef } from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
@@ -35,66 +35,48 @@ const buttonVariants = cva(
   },
 )
 
-function Button({
-  className,
-  variant,
-  size,
-  asChild = false,
-  children,
-  ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-  }) {
+type ButtonVariants = VariantProps<typeof buttonVariants>
+
+type ButtonOwnProps = {
+  asChild?: boolean
+  children?: React.ReactNode
+  className?: string
+}
+
+// Union for intrinsic button props and any element when asChild is used
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & ButtonVariants & ButtonOwnProps
+
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  { className, variant, size, asChild = false, children, ...props },
+  ref,
+) {
   const classNames = cn(buttonVariants({ variant, size, className }))
 
-  // When using asChild / Slot, Radix requires exactly one child element.
-  // Clone the single child and inject our visual structure into it so
-  // Slot receives a single element and still includes the background span.
+  // If asChild is provided, render a Radix Slot which allows the caller to pass
+  // a custom element (like Link) while keeping our classes. Slot will forward
+  // props to the child element.
   if (asChild) {
-    try {
-      const child = React.Children.only(children) as React.ReactElement
-      const childProps = (child.props || {}) as any
-
-      const cloned = React.cloneElement(
-        child,
-        {
-          ...childProps,
-          className: cn(classNames, childProps.className),
-          // preserve any existing props from the caller but allow our props to merge
-          ...(props || {}),
-        },
-        <>
-          {variant === "default" && (
-            <span className="absolute inset-0 bg-primary-foreground/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-          )}
-          <span className="relative z-10 flex items-center gap-2">{childProps.children}</span>
-        </>,
-      )
-
-      return (
-        <Slot data-slot="button" {...props}>
-          {cloned}
-        </Slot>
-      )
-    } catch (e) {
-      // If the consumer passed multiple children or a non-element, fall back to a regular button
-      // and render children normally to avoid breaking the app.
-      // eslint-disable-next-line no-console
-      console.warn("Button with asChild expects a single React element child. Falling back to a native button.", e)
-    }
+    return (
+      <Slot
+        data-slot="button"
+        className={classNames}
+        {...(props as Record<string, unknown>)}
+      >
+        {children}
+      </Slot>
+    )
   }
 
-  const Comp = "button"
-
   return (
-    <Comp data-slot="button" className={classNames} {...props}>
+    <button ref={ref} data-slot="button" className={classNames} {...props}>
       {variant === "default" && (
         <span className="absolute inset-0 bg-primary-foreground/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300 ease-out" />
       )}
       <span className="relative z-10 flex items-center gap-2">{children}</span>
-    </Comp>
+    </button>
   )
-}
+})
+
+Button.displayName = "Button"
 
 export { Button, buttonVariants }

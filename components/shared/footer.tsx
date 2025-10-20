@@ -44,11 +44,11 @@ const footerLinks = [
 export default function Footer() {
   return (
     <footer className="relative border-t border-border/40 bg-background/50 backdrop-blur-sm">
-      <div className="container mx-auto px-4 py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-12 gap-x-8 text-sm text-muted-foreground">
+      <div className="container mx-auto px-4 py-16 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-12 gap-x-8 text-sm text-muted-foreground">
         
         {/* Logo + Description + App Links */}
         <motion.div
-          className="col-span-1 sm:col-span-2 lg:col-span-2 flex flex-col items-start"
+          className="col-span-2 lg:col-span-2 flex flex-col items-start"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -91,7 +91,7 @@ export default function Footer() {
         {footerLinks.map((group, i) => (
           <motion.div
             key={group.title} // Use title as key for stability
-            className="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-1"
+            className="sm:col-span-1 md:col-span-1 lg:col-span-1"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: i * 0.1 }}

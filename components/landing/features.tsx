@@ -72,7 +72,7 @@ export default function Features() {
     <div className="relative py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background pointer-events-none" />
 
-      <div className="container relative mx-auto px-4">
+      <div className="relative mx-auto px-4 max-w-7xl">
         <motion.div
           className="mx-auto max-w-3xl text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -102,12 +102,10 @@ export default function Features() {
           {features.map((feature, index) => (
             <motion.div key={index} variants={itemVariants}>
               <Card className="group relative border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-300 overflow-hidden h-full">
-                {/* Animated gradient background on hover */}
                 <div
                   className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
                 />
 
-                {/* Glow effect */}
                 <div className="absolute -inset-px bg-gradient-to-br from-primary/20 via-transparent to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg blur-xl" />
 
                 <CardContent className="relative flex flex-col items-start gap-4 p-6 h-full">

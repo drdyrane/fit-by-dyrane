@@ -1,4 +1,5 @@
-import React, { forwardRef } from "react"
+import type React from "react"
+import { forwardRef } from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
@@ -9,11 +10,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md active:scale-[0.98]",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl active:scale-[0.98]",
         destructive:
           "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 shadow-sm hover:shadow-md active:scale-[0.98]",
         outline:
-          "border-2 border-primary bg-background text-primary shadow-xs hover:bg-primary/5 dark:hover:bg-primary/10 active:scale-[0.98]",
+          "border-2 border-primary/50 bg-transparent text-foreground hover:bg-primary/5 shadow-xs active:scale-[0.98]",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm hover:shadow-md active:scale-[0.98]",
         ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 active:scale-[0.98]",
@@ -43,7 +44,6 @@ type ButtonOwnProps = {
   className?: string
 }
 
-// Union for intrinsic button props and any element when asChild is used
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & ButtonVariants & ButtonOwnProps
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
@@ -52,16 +52,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
 ) {
   const classNames = cn(buttonVariants({ variant, size, className }))
 
-  // If asChild is provided, render a Radix Slot which allows the caller to pass
-  // a custom element (like Link) while keeping our classes. Slot will forward
-  // props to the child element.
   if (asChild) {
     return (
-      <Slot
-        data-slot="button"
-        className={classNames}
-        {...(props as Record<string, unknown>)}
-      >
+      <Slot data-slot="button" className={classNames} {...(props as Record<string, unknown>)}>
         {children}
       </Slot>
     )
@@ -70,7 +63,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   return (
     <button ref={ref} data-slot="button" className={classNames} {...props}>
       {variant === "default" && (
-        <span className="absolute inset-0 bg-primary-foreground/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+        <span
+          className="absolute inset-0 bg-gradient-to-r from-primary/80 via-accent/80 to-secondary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          aria-hidden="true"
+        />
       )}
       <span className="relative z-10 flex items-center gap-2">{children}</span>
     </button>

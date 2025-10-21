@@ -11,7 +11,7 @@ export default function Pricing() {
       <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.1)_0%,transparent_70%)]" />
 
-      <div className="container relative mx-auto px-4">
+      <div className="relative mx-auto px-4 max-w-7xl">
         <motion.div
           className="mx-auto max-w-3xl text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -84,8 +84,7 @@ export default function Pricing() {
 
                 <Button asChild size="lg" className="w-full text-base group/btn relative overflow-hidden">
                   <Link href="/auth/sign-up">
-                    <span className="relative z-10">Get Started Free</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
+                    <span className="relative z-10 flex items-center gap-2">Get Started Free</span>
                   </Link>
                 </Button>
               </CardContent>

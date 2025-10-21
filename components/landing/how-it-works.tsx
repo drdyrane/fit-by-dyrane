@@ -32,7 +32,7 @@ export default function HowItWorks() {
       <div className="absolute inset-0 bg-gradient-to-b from-background via-accent/5 to-background" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
 
-      <div className="container relative mx-auto px-4">
+      <div className="relative mx-auto px-4 max-w-7xl">
         <motion.div
           className="mx-auto max-w-3xl text-center mb-20"
           initial={{ opacity: 0, y: 20 }}

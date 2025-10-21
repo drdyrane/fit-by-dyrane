@@ -34,7 +34,7 @@ export default function Stats() {
     <div className="relative py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-accent/5 to-background" />
 
-      <div className="container relative mx-auto px-4">
+      <div className="relative mx-auto px-4 max-w-7xl">
         <div className="mx-auto max-w-6xl grid grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
             <motion.div

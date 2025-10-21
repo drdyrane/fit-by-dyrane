@@ -10,7 +10,7 @@ export default function FinalCTA() {
       <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/10 to-background" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.15)_0%,transparent_70%)]" />
 
-      <div className="container relative mx-auto px-4">
+      <div className="relative mx-auto px-4 max-w-7xl">
         <motion.div
           className="mx-auto max-w-4xl text-center"
           initial={{ opacity: 0, y: 30 }}
@@ -36,17 +36,16 @@ export default function FinalCTA() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" className="text-lg px-8 py-6 group relative overflow-hidden">
+            <Button asChild size="lg" className="text-lg px-8 py-6 h-14 group relative overflow-hidden">
               <Link href="/auth/sign-up">
                 <span className="relative z-10 flex items-center gap-2">
                   Get Started Free
                   <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </Link>
             </Button>
 
-            <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6 group bg-transparent">
+            <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6 h-14 bg-transparent">
               <Link href="#features">
                 <span className="flex items-center gap-2">Learn More</span>
               </Link>

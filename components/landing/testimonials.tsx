@@ -38,7 +38,7 @@ export default function Testimonials() {
     <div className="relative py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/5 to-background" />
 
-      <div className="container relative mx-auto px-4">
+      <div className="relative mx-auto px-4 max-w-7xl">
         <motion.div
           className="mx-auto max-w-3xl text-center mb-16"
           initial={{ opacity: 0, y: 20 }}

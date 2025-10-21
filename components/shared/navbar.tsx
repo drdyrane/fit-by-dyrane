@@ -2,7 +2,7 @@
 "use client"
 
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Activity, Menu, X, HeartPulse, Info, Users, DollarSign } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeSwitcher } from "@/components/shared/theme-switcher"
@@ -11,12 +11,29 @@ import { cn } from "@/lib/utils"
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [visible, setVisible] = useState(true);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20)
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 0) return;
+
+      if (currentScrollY > lastScrollY.current) {
+        // scrolling down → hide
+        setVisible(false);
+      } else {
+        // scrolling up → show
+        setVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const menuItems = [
     { label: "Features", href: "#features", icon: <HeartPulse className="h-4 w-4 mr-1 text-primary animate-pulse" /> },
@@ -28,10 +45,9 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
-        isScrolled
-          ? "bg-background/80 backdrop-blur-md border-b border-border/50 shadow-lg"
-          : "bg-transparent"
+        "fixed top-0 left-0 z-50 w-full transition-transform duration-300",
+        visible ? "translate-y-0" : "-translate-y-full",
+        "bg-background/20 backdrop-blur-xs"
       )}
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">

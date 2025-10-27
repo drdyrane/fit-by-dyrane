@@ -6,20 +6,17 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { Loader2, Mail, Lock, CheckCircle2 } from "lucide-react"
+import { Loader2, Lock, CheckCircle2 } from "lucide-react"
 
-export default function SignUpPage() {
-  const [email, setEmail] = useState("")
+export default function ResetPasswordPage() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
-  // Password strength indicator
   const getPasswordStrength = (pass: string) => {
     if (pass.length === 0) return { strength: 0, label: "" }
     if (pass.length < 6) return { strength: 1, label: "Weak", color: "bg-destructive" }
@@ -30,7 +27,7 @@ export default function SignUpPage() {
 
   const passwordStrength = getPasswordStrength(password)
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault()
     const supabase = createClient()
     setIsLoading(true)
@@ -49,15 +46,11 @@ export default function SignUpPage() {
     }
 
     try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/onboarding`,
-        },
+      const { error } = await supabase.auth.updateUser({
+        password: password,
       })
       if (error) throw error
-      router.push("/auth/sign-up-success")
+      router.push("/auth/login?message=Password updated successfully")
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred")
     } finally {
@@ -73,38 +66,19 @@ export default function SignUpPage() {
             <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
               Fit by Dyrane
             </h1>
-            <p className="text-muted-foreground">Start your wellness journey today</p>
+            <p className="text-muted-foreground">Create a new password</p>
           </div>
 
           <Card className="border-primary/20 bg-card/50 backdrop-blur-xl shadow-2xl">
             <CardHeader className="space-y-1">
-              <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
-              <CardDescription>Sign up to begin tracking your wellness</CardDescription>
+              <CardTitle className="text-2xl font-bold">Reset Password</CardTitle>
+              <CardDescription>Enter your new password below</CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSignUp} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium">
-                    Email
-                  </Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="you@example.com"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      disabled={isLoading}
-                      className="pl-10 h-12 bg-background/50"
-                    />
-                  </div>
-                </div>
-
+              <form onSubmit={handleResetPassword} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="password" className="text-sm font-medium">
-                    Password
+                    New Password
                   </Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -137,7 +111,7 @@ export default function SignUpPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="confirm-password" className="text-sm font-medium">
-                    Confirm Password
+                    Confirm New Password
                   </Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -166,20 +140,13 @@ export default function SignUpPage() {
                   {isLoading ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Creating account...
+                      Updating password...
                     </>
                   ) : (
-                    "Create Account"
+                    "Update Password"
                   )}
                 </Button>
               </form>
-
-              <div className="mt-6 text-center text-sm">
-                <span className="text-muted-foreground">Already have an account? </span>
-                <Link href="/auth/login" className="font-medium text-primary hover:underline">
-                  Sign in
-                </Link>
-              </div>
             </CardContent>
           </Card>
         </div>

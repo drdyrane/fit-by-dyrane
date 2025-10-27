@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { Github, Twitter, Linkedin, Activity, Apple } from "lucide-react" // Assuming GooglePlay icon exists or using a generic one
-import { pacifico } from "@/app/layout"
+import { Github, Twitter, Linkedin, Activity, Apple } from "lucide-react"
+import { pacifico } from "@/lib/fonts"
 
 const footerLinks = [
   {

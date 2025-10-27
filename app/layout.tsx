@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Poppins, Geist_Mono } from "next/font/google"
+import { Poppins, Geist_Mono, Pacifico } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/shared/theme-provider"
 import "./globals.css"
@@ -13,6 +13,13 @@ const poppins = Poppins({
 })
 
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
+
+export const pacifico = Pacifico({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-pacifico",
+  display: "swap",
+})
 
 export const metadata: Metadata = {
   title: "Fit by Dyrane - Your Wellness Companion",

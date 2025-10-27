@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { Github, Twitter, Linkedin, Activity, Apple } from "lucide-react" // Assuming GooglePlay icon exists or using a generic one
+import { pacifico } from "@/app/layout"
 
 const footerLinks = [
   {
@@ -41,6 +42,14 @@ const footerLinks = [
 ]
 
 export default function Footer() {
+  const colorPalette = [
+    "#6366F1", // Primary - Blue-Purple
+    "#8B5CF6", // Secondary - Soft Purple
+    "#EC4899", // Accent - Pink-Purple
+    "#F59E0B", // Warning - Orange
+    "#10B981", // Success - Green
+  ]
+
   return (
     <footer className="relative border-t border-border/40 bg-background/50 backdrop-blur-sm">
       <div className="mx-auto px-4 py-16 max-w-7xl grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-12 gap-x-8 text-sm text-muted-foreground">
@@ -162,6 +171,33 @@ export default function Footer() {
           >
             <Github className="w-5 h-5" />
           </motion.a>
+        </div>
+      </div>
+
+      {/* Colors by Luz credit section */}
+      <div className="border-t border-border/40">
+        <div className="mx-auto px-4 py-6 max-w-7xl">
+          <motion.div
+            className="flex flex-col lg:flex-row items-center lg:justify-end gap-3"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex gap-1.5">
+              {colorPalette.map((color, i) => (
+                <motion.span
+                  key={i}
+                  className="w-6 h-6 rounded-md shadow-sm"
+                  style={{ backgroundColor: color }}
+                  aria-label={`Color ${i + 1}`}
+                  whileHover={{ scale: 1.15, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                />
+              ))}
+            </div>
+            <span className={`${pacifico.className} text-sm text-muted-foreground/80`}>Colors by Luz</span>
+          </motion.div>
         </div>
       </div>
     </footer>

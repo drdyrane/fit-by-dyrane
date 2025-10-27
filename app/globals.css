@@ -119,6 +119,8 @@
   /* Updated font family to Poppins for a modern, friendly aesthetic */
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback";
+  /* Added Pacifico font variable for "Colors by Luz" credit */
+  --font-pacifico: "Pacifico", cursive;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

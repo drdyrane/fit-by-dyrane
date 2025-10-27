@@ -117,8 +117,9 @@ npm install date-fns swr
 fit-by-dyrane-mobile/
 ├── app/                          # Expo Router (file-based routing)
 │   ├── (auth)/                  # Auth group
-│   │   ├── login.tsx
-│   │   ├── sign-up.tsx
+│   │   ├── email-step.tsx      # Email collection step
+│   │   ├── password-login.tsx  # Password login step
+│   │   ├── password-signup.tsx # Password signup step
 │   │   ├── forgot-password.tsx
 │   │   └── reset-password.tsx
 │   ├── (tabs)/                  # Tab navigation group
@@ -133,6 +134,7 @@ fit-by-dyrane-mobile/
 ├── components/
 │   ├── ui/                     # Reusable UI components
 │   ├── features/               # Feature-specific components
+│   ├── onboarding/             # Onboarding components
 │   └── shared/                 # Shared components
 ├── lib/
 │   ├── supabase.ts            # Supabase client
@@ -150,8 +152,8 @@ fit-by-dyrane-mobile/
 | Web Route | Mobile Route | Notes |
 |-----------|--------------|-------|
 | `/` | `app/index.tsx` | Landing/Splash |
-| `/auth/login` | `app/(auth)/login.tsx` | Auth group |
-| `/auth/sign-up` | `app/(auth)/sign-up.tsx` | Auth group |
+| `/auth/login` | `app/(auth)/email-step.tsx` | Auth group |
+| `/auth/sign-up` | `app/(auth)/email-step.tsx` | Auth group |
 | `/home` | `app/(tabs)/index.tsx` | Tab navigator |
 | `/dashboard` | `app/(tabs)/index.tsx` | Same as home |
 | `/settings` | `app/(tabs)/settings.tsx` | Tab navigator |
@@ -325,9 +327,10 @@ interface InputProps extends TextInputProps {
   label?: string
   error?: string
   icon?: React.ReactNode
+  rightIcon?: React.ReactNode
 }
 
-export function Input({ label, error, icon, ...props }: InputProps) {
+export function Input({ label, error, icon, rightIcon, ...props }: InputProps) {
   const [isFocused, setIsFocused] = useState(false)
 
   const borderStyle = useAnimatedStyle(() => ({
@@ -354,6 +357,7 @@ export function Input({ label, error, icon, ...props }: InputProps) {
             style={{ flex: 1, color: '#FFFFFF', fontSize: 16 }}
             placeholderTextColor="#6B7280"
           />
+          {rightIcon && <Box marginLeft="s">{rightIcon}</Box>}
         </Box>
       </Animated.View>
       {error && (
@@ -387,6 +391,377 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     detectSessionInUrl: false,
   },
 })
+\`\`\`
+
+#### Multi-Step Authentication Flow
+
+##### Step 1: Email Collection Screen
+
+\`\`\`typescript
+// app/(auth)/email-step.tsx
+import React, { useState } from 'react'
+import { KeyboardAvoidingView, Platform } from 'react-native'
+import { useRouter } from 'expo-router'
+import { supabase } from '@/lib/supabase'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
+import { Box, Text } from '@/components/ui'
+import { Mail } from '@/components/icons'
+
+export default function EmailStepScreen() {
+  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
+
+  const handleContinue = async () => {
+    setLoading(true)
+    setError(null)
+
+    // Check if user exists
+    const { data, error: checkError } = await supabase
+      .from('profiles')
+      .select('email')
+      .eq('email', email)
+      .single()
+
+    setLoading(false)
+
+    if (checkError && checkError.code !== 'PGRST116') {
+      setError('An error occurred. Please try again.')
+      return
+    }
+
+    // Navigate to appropriate screen
+    if (data) {
+      // User exists - go to login
+      router.push({
+        pathname: '/(auth)/password-login',
+        params: { email },
+      })
+    } else {
+      // New user - go to sign up
+      router.push({
+        pathname: '/(auth)/password-signup',
+        params: { email },
+      })
+    }
+  }
+
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <Box flex={1} padding="xl" justifyContent="center">
+        <Text variant="header" marginBottom="m" textAlign="center">
+          Welcome to Fit by Dyrane
+        </Text>
+        <Text variant="body" color="muted" marginBottom="xl" textAlign="center">
+          Enter your email to get started
+        </Text>
+
+        <Input
+          label="Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoComplete="email"
+          autoFocus
+          icon={<Mail size={20} color="#6B7280" />}
+          error={error}
+        />
+
+        <Box height={24} />
+
+        <Button
+          onPress={handleContinue}
+          loading={loading}
+          disabled={!email || loading}
+        >
+          Continue
+        </Button>
+
+        <Box height={16} />
+
+        <Button
+          variant="outline"
+          onPress={() => router.back()}
+        >
+          Back to Home
+        </Button>
+      </Box>
+    </KeyboardAvoidingView>
+  )
+}
+\`\`\`
+
+##### Step 2: Password Entry (Login)
+
+\`\`\`typescript
+// app/(auth)/password-login.tsx
+import React, { useState } from 'react'
+import { KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native'
+import { useRouter, useLocalSearchParams } from 'expo-router'
+import { supabase } from '@/lib/supabase'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
+import { Box, Text } from '@/components/ui'
+import { Lock, Eye, EyeOff } from '@/components/icons'
+
+export default function PasswordLoginScreen() {
+  const { email } = useLocalSearchParams<{ email: string }>()
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
+
+  const handleLogin = async () => {
+    setLoading(true)
+    setError(null)
+
+    const { error: loginError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+
+    if (loginError) {
+      setError(loginError.message)
+      setLoading(false)
+    } else {
+      // Check if onboarding is completed
+      const { data: user } = await supabase.auth.getUser()
+      const { data: progress } = await supabase
+        .from('onboarding_progress')
+        .select('completed')
+        .eq('id', user.user?.id)
+        .single()
+
+      if (progress?.completed) {
+        router.replace('/(tabs)')
+      } else {
+        router.replace('/onboarding/0')
+      }
+    }
+  }
+
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <Box flex={1} padding="xl" justifyContent="center">
+        <TouchableOpacity onPress={() => router.back()}>
+          <Text variant="body" color="primary" marginBottom="xl">
+            ← Change email
+          </Text>
+        </TouchableOpacity>
+
+        <Text variant="header" marginBottom="m">
+          Welcome back
+        </Text>
+        <Text variant="body" color="muted" marginBottom="xl">
+          {email}
+        </Text>
+
+        <Input
+          label="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!showPassword}
+          autoComplete="password"
+          autoFocus
+          icon={<Lock size={20} color="#6B7280" />}
+          rightIcon={
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              {showPassword ? (
+                <EyeOff size={20} color="#6B7280" />
+              ) : (
+                <Eye size={20} color="#6B7280" />
+              )}
+            </TouchableOpacity>
+          }
+          error={error}
+        />
+
+        <TouchableOpacity
+          onPress={() => router.push('/(auth)/forgot-password')}
+        >
+          <Text variant="caption" color="primary" marginTop="s">
+            Forgot password?
+          </Text>
+        </TouchableOpacity>
+
+        <Box height={24} />
+
+        <Button
+          onPress={handleLogin}
+          loading={loading}
+          disabled={!password || loading}
+        >
+          Sign In
+        </Button>
+      </Box>
+    </KeyboardAvoidingView>
+  )
+}
+\`\`\`
+
+##### Step 3: Password Creation (Sign Up)
+
+\`\`\`typescript
+// app/(auth)/password-signup.tsx
+import React, { useState } from 'react'
+import { KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native'
+import { useRouter, useLocalSearchParams } from 'expo-router'
+import { supabase } from '@/lib/supabase'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
+import { Box, Text } from '@/components/ui'
+import { Lock, Eye, EyeOff, CheckCircle } from '@/components/icons'
+
+export default function PasswordSignupScreen() {
+  const { email } = useLocalSearchParams<{ email: string }>()
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
+
+  // Password strength calculation
+  const getPasswordStrength = (pass: string) => {
+    if (pass.length === 0) return { strength: 0, label: '', color: '#374151' }
+    if (pass.length < 6) return { strength: 1, label: 'Weak', color: '#EF4444' }
+    if (pass.length < 10) return { strength: 2, label: 'Fair', color: '#F59E0B' }
+    if (pass.length < 12) return { strength: 3, label: 'Good', color: '#6A5BD8' }
+    return { strength: 4, label: 'Strong', color: '#D946EF' }
+  }
+
+  const passwordStrength = getPasswordStrength(password)
+
+  const handleSignUp = async () => {
+    if (password !== confirmPassword) {
+      setError('Passwords do not match')
+      return
+    }
+
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters')
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+
+    const { error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: 'fitbydyrane://onboarding/0',
+      },
+    })
+
+    if (signUpError) {
+      setError(signUpError.message)
+      setLoading(false)
+    } else {
+      router.replace('/onboarding/0')
+    }
+  }
+
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <Box flex={1} padding="xl" justifyContent="center">
+        <TouchableOpacity onPress={() => router.back()}>
+          <Text variant="body" color="primary" marginBottom="xl">
+            ← Change email
+          </Text>
+        </TouchableOpacity>
+
+        <Text variant="header" marginBottom="m">
+          Create your account
+        </Text>
+        <Text variant="body" color="muted" marginBottom="xl">
+          {email}
+        </Text>
+
+        <Input
+          label="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!showPassword}
+          autoFocus
+          icon={<Lock size={20} color="#6B7280" />}
+          rightIcon={
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              {showPassword ? (
+                <EyeOff size={20} color="#6B7280" />
+              ) : (
+                <Eye size={20} color="#6B7280" />
+              )}
+            </TouchableOpacity>
+          }
+        />
+
+        {/* Password Strength Indicator */}
+        {password && (
+          <Box marginTop="s">
+            <Box flexDirection="row" gap="xs">
+              {[1, 2, 3, 4].map((level) => (
+                <Box
+                  key={level}
+                  flex={1}
+                  height={4}
+                  borderRadius="full"
+                  backgroundColor={
+                    level <= passwordStrength.strength
+                      ? passwordStrength.color
+                      : '#374151'
+                  }
+                />
+              ))}
+            </Box>
+            <Text variant="caption" color="muted" marginTop="xs">
+              {passwordStrength.label} password
+            </Text>
+          </Box>
+        )}
+
+        <Box height={16} />
+
+        <Input
+          label="Confirm Password"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          secureTextEntry={!showPassword}
+          icon={<Lock size={20} color="#6B7280" />}
+          rightIcon={
+            confirmPassword && password === confirmPassword ? (
+              <CheckCircle size={20} color="#D946EF" />
+            ) : null
+          }
+          error={error}
+        />
+
+        <Box height={24} />
+
+        <Button
+          onPress={handleSignUp}
+          loading={loading}
+          disabled={!password || !confirmPassword || loading}
+        >
+          Create Account
+        </Button>
+      </Box>
+    </KeyboardAvoidingView>
+  )
+}
 \`\`\`
 
 #### Login Screen
@@ -471,7 +846,7 @@ export default function LoginScreen() {
 
           <Button
             variant="outline"
-            onPress={() => router.push('/(auth)/sign-up')}
+            onPress={() => router.push('/(auth)/password-signup')}
           >
             Create Account
           </Button>
@@ -809,32 +1184,116 @@ const SettingsScreen = React.lazy(() => import('./screens/Settings'))
 - [ ] Setup tab navigator
 
 ### Phase 3: Authentication (Week 4)
-- [ ] Migrate login screen
-- [ ] Migrate sign-up screen
+- [ ] Migrate multi-step login screen (email → password)
+- [ ] Migrate multi-step sign-up screen (email → password → confirm)
+- [ ] Add password visibility toggle
+- [ ] Add password strength indicator
 - [ ] Migrate forgot password
 - [ ] Migrate reset password
-- [ ] Test auth flows
+- [ ] Test auth flows with Supabase backend
 
-### Phase 4: Main Features (Week 5-6)
+### Phase 4: Onboarding (Week 5)
+- [ ] Migrate welcome step
+- [ ] Migrate goals selection step
+- [ ] Migrate profile information step
+- [ ] Migrate preferences step
+- [ ] Add progress indicator
+- [ ] Connect to onboarding_progress table
+- [ ] Test complete onboarding flow
+
+### Phase 5: Main Features (Week 6-7)
+- [ ] Migrate home screen
 - [ ] Migrate dashboard
-- [ ] Migrate onboarding
 - [ ] Migrate settings
 - [ ] Migrate health metrics
 - [ ] Add charts
 
-### Phase 5: Polish (Week 7)
+### Phase 6: Polish (Week 8)
 - [ ] Add animations
 - [ ] Optimize performance
 - [ ] Add error handling
+- [ ] Add toast notifications
 - [ ] Test on devices
 - [ ] Fix bugs
 
-### Phase 6: Deployment (Week 8)
+### Phase 7: Deployment (Week 9)
 - [ ] Create app icons
 - [ ] Create splash screens
 - [ ] Build for iOS
 - [ ] Build for Android
 - [ ] Submit to stores
+
+## Authentication & Onboarding Implementation
+
+### Onboarding Flow Implementation
+
+\`\`\`typescript
+// app/onboarding/[step].tsx
+import React from 'react'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import { WelcomeStep } from '@/components/onboarding/WelcomeStep'
+import { GoalsStep } from '@/components/onboarding/GoalsStep'
+import { ProfileStep } from '@/components/onboarding/ProfileStep'
+import { PreferencesStep } from '@/components/onboarding/PreferencesStep'
+import { Box, Text } from '@/components/ui'
+import { ProgressBar } from '@/components/ui/ProgressBar'
+
+export default function OnboardingStepScreen() {
+  const { step } = useLocalSearchParams<{ step: string }>()
+  const router = useRouter()
+  const currentStep = parseInt(step || '0')
+  const totalSteps = 4
+
+  const handleNext = () => {
+    if (currentStep < totalSteps - 1) {
+      router.push(`/onboarding/${currentStep + 1}`)
+    } else {
+      router.replace('/(tabs)')
+    }
+  }
+
+  const handleBack = () => {
+    if (currentStep > 0) {
+      router.back()
+    }
+  }
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 0:
+        return <WelcomeStep onNext={handleNext} />
+      case 1:
+        return <GoalsStep onNext={handleNext} onBack={handleBack} />
+      case 2:
+        return <ProfileStep onNext={handleNext} onBack={handleBack} />
+      case 3:
+        return <PreferencesStep onNext={handleNext} onBack={handleBack} />
+      default:
+        return null
+    }
+  }
+
+  return (
+    <Box flex={1} backgroundColor="background">
+      {/* Progress Bar */}
+      <Box padding="m" paddingTop="xl">
+        <Box flexDirection="row" justifyContent="space-between" marginBottom="s">
+          <Text variant="caption" color="muted">
+            Step {currentStep + 1} of {totalSteps}
+          </Text>
+          <Text variant="caption" color="muted">
+            {Math.round(((currentStep + 1) / totalSteps) * 100)}% complete
+          </Text>
+        </Box>
+        <ProgressBar progress={((currentStep + 1) / totalSteps) * 100} />
+      </Box>
+
+      {/* Step Content */}
+      {renderStep()}
+    </Box>
+  )
+}
+\`\`\`
 
 ## Resources
 

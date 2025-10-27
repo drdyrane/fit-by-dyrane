@@ -51,10 +51,10 @@ export function Navbar() {
   }
 
   const menuItems = [
-    { label: "Features", href: "#features", icon: <HeartPulse className="h-4 w-4 mr-1 text-primary" /> },
-    { label: "How It Works", href: "#how-it-works", icon: <Info className="h-4 w-4 mr-1 text-accent" /> },
-    { label: "Testimonials", href: "#testimonials", icon: <Users className="h-4 w-4 mr-1 text-secondary" /> },
-    { label: "Pricing", href: "#pricing", icon: <DollarSign className="h-4 w-4 mr-1 text-warning" /> },
+    { label: "Features", href: "/#features", icon: <HeartPulse className="h-4 w-4 mr-1 text-primary" /> },
+    { label: "How It Works", href: "/#how-it-works", icon: <Info className="h-4 w-4 mr-1 text-accent" /> },
+    { label: "Testimonials", href: "/#testimonials", icon: <Users className="h-4 w-4 mr-1 text-secondary" /> },
+    { label: "Pricing", href: "/#pricing", icon: <DollarSign className="h-4 w-4 mr-1 text-warning" /> },
   ]
 
   return (

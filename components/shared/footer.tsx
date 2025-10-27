@@ -9,34 +9,34 @@ const footerLinks = [
   {
     title: "Product",
     links: [
-      { name: "Features", href: "#features" },
-      { name: "Pricing", href: "#pricing" },
-      { name: "How it Works", href: "#how-it-works" }, // Added from your sections
+      { name: "Features", href: "/#features" },
+      { name: "Pricing", href: "/#pricing" },
+      { name: "How it Works", href: "/#how-it-works" }, // Added from your sections
     ],
   },
   {
     title: "Company",
     links: [
-      { name: "About Us", href: "#about" }, // Changed to About Us for clarity
-      { name: "Blog", href: "#blog" }, // Assuming a blog section/page
-      { name: "Careers", href: "#careers" }, // Assuming a careers section/page
+      { name: "About Us", href: "/#about" }, // Changed to About Us for clarity
+      { name: "Blog", href: "/#blog" }, // Assuming a blog section/page
+      { name: "Careers", href: "/#careers" }, // Assuming a careers section/page
     ],
   },
   {
     title: "Support",
     links: [
-      { name: "FAQ", href: "#faq" },
-      { name: "Contact Us", href: "#contact" }, // Changed to Contact Us
-      { name: "Privacy Policy", href: "#privacy" }, // Assuming a privacy policy page
-      { name: "Terms of Service", href: "#terms" }, // Common addition
+      { name: "FAQ", href: "/#faq" },
+      { name: "Contact Us", href: "/#contact" }, // Changed to Contact Us
+      { name: "Privacy Policy", href: "/#privacy" }, // Assuming a privacy policy page
+      { name: "Terms of Service", href: "/#terms" }, // Common addition
     ],
   },
   {
     title: "Resources", // Added a Resources group based on your sections
     links: [
-      { name: "Integrations", href: "#integrations" },
-      { name: "Testimonials", href: "#testimonials" },
-      { name: "Stats", href: "#stats" },
+      { name: "Integrations", href: "/#integrations" },
+      { name: "Testimonials", href: "/#testimonials" },
+      { name: "Stats", href: "/#stats" },
     ],
   },
 ]

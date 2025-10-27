@@ -12,10 +12,10 @@ export function NavbarMobile({ className }: { className?: string }) {
     const [open, setOpen] = React.useState(false)
 
     const menuItems = [
-        { label: "Features", href: "#features", icon: <Activity className="h-5 w-5 mr-2 text-primary" /> },
-        { label: "How It Works", href: "#how-it-works", icon: <Info className="h-5 w-5 mr-2 text-accent" /> },
-        { label: "Testimonials", href: "#testimonials", icon: <Users className="h-5 w-5 mr-2 text-secondary" /> },
-        { label: "Pricing", href: "#pricing", icon: <DollarSign className="h-5 w-5 mr-2 text-warning" /> },
+        { label: "Features", href: "/#features", icon: <Activity className="h-5 w-5 mr-2 text-primary" /> },
+        { label: "How It Works", href: "/#how-it-works", icon: <Info className="h-5 w-5 mr-2 text-accent" /> },
+        { label: "Testimonials", href: "/#testimonials", icon: <Users className="h-5 w-5 mr-2 text-secondary" /> },
+        { label: "Pricing", href: "/#pricing", icon: <DollarSign className="h-5 w-5 mr-2 text-warning" /> },
     ]
 
     return (

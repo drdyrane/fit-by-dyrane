@@ -86,13 +86,13 @@ export default function SignUpPage() {
     <div className="flex min-h-screen w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-md">
         <div className="flex flex-col gap-6">
-          <Link
+          {/* <Link
             href="/"
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to home
-          </Link>
+          </Link> */}
 
           <div className="text-center space-y-2">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
@@ -205,9 +205,8 @@ export default function SignUpPage() {
                           {[1, 2, 3, 4].map((level) => (
                             <div
                               key={level}
-                              className={`h-1 flex-1 rounded-full transition-colors ${
-                                level <= passwordStrength.strength ? passwordStrength.color : "bg-muted"
-                              }`}
+                              className={`h-1 flex-1 rounded-full transition-colors ${level <= passwordStrength.strength ? passwordStrength.color : "bg-muted"
+                                }`}
                             />
                           ))}
                         </div>

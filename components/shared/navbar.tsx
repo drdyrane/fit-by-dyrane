@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import Link from "next/link"
 import { useState, useEffect, useRef } from "react"
 import { Activity, HeartPulse, Info, Users, DollarSign } from "lucide-react"
@@ -30,6 +32,23 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("#")) {
+      e.preventDefault()
+      const element = document.querySelector(href)
+      if (element) {
+        const offset = 80 // Account for fixed navbar height
+        const elementPosition = element.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - offset
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        })
+      }
+    }
+  }
 
   const menuItems = [
     { label: "Features", href: "#features", icon: <HeartPulse className="h-4 w-4 mr-1 text-primary" /> },
@@ -63,15 +82,16 @@ export function Navbar() {
 
         <nav className="hidden lg:flex items-center gap-6">
           {menuItems.map((item) => (
-            <Link
+            <a
               key={item.href}
               href={item.href}
+              onClick={(e) => handleSmoothScroll(e, item.href)}
               className="flex items-center text-sm font-medium text-muted-foreground hover:text-primary transition-all group relative px-2 py-1 rounded-md hover:bg-accent/10"
             >
               {item.icon}
               <span>{item.label}</span>
               <span className="absolute left-0 -bottom-1 h-[2px] w-full bg-gradient-to-r from-primary via-accent to-secondary scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
-            </Link>
+            </a>
           ))}
         </nav>
 

@@ -9,6 +9,8 @@ import Testimonials from "@/components/landing/testimonials"
 import Pricing from "@/components/landing/pricing"
 import FinalCTA from "@/components/landing/final-cta"
 import HeroSection from "@/components/landing/hero/HeroSection"
+import ImageryShowcase from "@/components/landing/imagery-showcase"
+import SplitImagery from "@/components/landing/split-imagery"
 
 export default function HomePage() {
   return (
@@ -20,13 +22,25 @@ export default function HomePage() {
 
         <HeroSection />
 
-        <Features />
+        <section id="features">
+          <Features />
+        </section>
 
-        <HowItWorks />
+        <ImageryShowcase />
 
-        <Testimonials />
+        <section id="how-it-works">
+          <HowItWorks />
+        </section>
 
-        <Pricing />
+        <SplitImagery />
+
+        <section id="testimonials">
+          <Testimonials />
+        </section>
+
+        <section id="pricing">
+          <Pricing />
+        </section>
 
         <Stats />
 

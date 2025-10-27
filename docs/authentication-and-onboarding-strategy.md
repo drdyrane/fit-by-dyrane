@@ -359,12 +359,13 @@ E2E Tests:
 
 ### Immediate (This Session):
 1. ✅ Create this strategy document
-2. ⏳ Implement multi-step auth forms
-3. ⏳ Add password visibility toggles
-4. ⏳ Add password strength indicators
-5. ⏳ Connect auth to Supabase backend
-6. ⏳ Test complete auth flow
-7. ⏳ Update Expo migration guide
+2. ✅ Implement multi-step auth forms
+3. ✅ Add password visibility toggles
+4. ✅ Add password strength indicators
+5. ✅ Connect auth to Supabase backend
+6. ✅ Fix environment variable configuration
+7. ⏳ Test complete auth flow with provided credentials
+8. ⏳ Update Expo migration guide
 
 ### Short Term (Next Session):
 1. Implement toast notification system
@@ -393,6 +394,56 @@ E2E Tests:
 | **Error Handling** | Toast notifications | Non-intrusive, mobile-friendly |
 | **Mobile Framework** | Expo React Native | Matches web tech stack, easier migration |
 | **Styling Approach** | NativeWind (Tailwind for RN) | Consistent with web, faster development |
+
+---
+
+## 11. Environment Variables Configuration
+
+### Required Environment Variables
+
+The application requires the following environment variables to be set:
+
+\`\`\`bash
+# Supabase Configuration
+SUPABASE_NEXT_PUBLIC_SUPABASE_URL=https://your-project.supSUPABASE_NEXT_PUBLIC_SUPABASE_ANON_KEY_ANON_KEY=your-anon-key-here
+
+# Development Redirect URL (for email verification)
+NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL=http://localhost:3000/onboarding
+\`\`\`
+
+### Setting Environment Variables
+
+**In Vercel (Production):**
+1. Go to Project Settings → Environment Variables
+2. Add each variable with its value
+3. Select appropriate environments (Production, Preview, Development)
+4. Redeploy the application
+
+**In Local Development:**
+1. Create a `.env.local` file in the project root
+2. Add the environment variables
+3. Restart the development server
+
+**In v0 Chat:**
+1. Click on the "Vars" section in the in-chat sidebar
+2. Add the environment variables with their values
+3. The variables will be automatically available to your application
+
+### Environment Variable Sources
+
+The Supabase credentials can be obtained from:
+1. Your Supabase project dashboard → Settings → API
+2. The Vercel integration if you've connected Supabase
+3. The v0 integration panel if Supabase is connected
+
+### Testing Authentication
+
+To test the authentication flow:
+1. Ensure the environment variables are properly set
+2. Use the sign-up flow to create a new account
+3. Verify email confirmation works
+4. Test login with the created credentials
+5. Test password reset flow
 
 ---
 

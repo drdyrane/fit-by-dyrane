@@ -405,7 +405,8 @@ The application requires the following environment variables to be set:
 
 \`\`\`bash
 # Supabase Configuration
-SUPABASE_NEXT_PUBLIC_SUPABASE_URL=https://your-project.supSUPABASE_NEXT_PUBLIC_SUPABASE_ANON_KEY_ANON_KEY=your-anon-key-here
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 
 # Development Redirect URL (for email verification)
 NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL=http://localhost:3000/onboarding

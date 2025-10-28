@@ -180,8 +180,10 @@ All tables have RLS policies ensuring users can only access their own data.
 ## Environment Variables
 
 Required environment variables (provided by Supabase integration):
-- `SUPABASE_NEXT_PUBLIC_SUPABASE_URL`: Supabase projecSUPABASE_NEXT_PUBLIC_SUPABASE_ANON_KEY_ANON_KEY`: Supabase anonymous key
+- `NEXT_PUBLIC_SUPABASE_URL`: Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Supabase anonymous key
 - `SUPABASE_SERVICE_ROLE_KEY`: Supabase service role key (server-side only)
+- `NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL`: Development redirect URL for email verification
 
 ## Design Principles
 

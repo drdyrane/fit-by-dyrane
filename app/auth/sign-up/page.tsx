@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { Loader2, Mail, Lock, CheckCircle2, Eye, EyeOff, ArrowLeft, ArrowRight } from "lucide-react"
+import { Loader2, Mail, Lock, CheckCircle2, Eye, EyeOff, ArrowRight } from "lucide-react"
 
 export default function SignUpPage() {
   const [step, setStep] = useState<"email" | "password">("email")
@@ -74,6 +74,18 @@ export default function SignUpPage() {
         },
       })
       if (error) throw error
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from("onboarding_progress").insert({
+          id: user.id,
+          step_completed: 0,
+          completed: false,
+        })
+      }
+
       router.push("/auth/sign-up-success")
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred")
@@ -205,8 +217,9 @@ export default function SignUpPage() {
                           {[1, 2, 3, 4].map((level) => (
                             <div
                               key={level}
-                              className={`h-1 flex-1 rounded-full transition-colors ${level <= passwordStrength.strength ? passwordStrength.color : "bg-muted"
-                                }`}
+                              className={`h-1 flex-1 rounded-full transition-colors ${
+                                level <= passwordStrength.strength ? passwordStrength.color : "bg-muted"
+                              }`}
                             />
                           ))}
                         </div>

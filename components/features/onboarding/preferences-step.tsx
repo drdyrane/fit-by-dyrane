@@ -6,10 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { completeOnboarding } from "@/app/actions/onboarding"
 import { updateThemePreference } from "@/app/actions/preferences"
 import { useRouter } from "next/navigation"
 import { CheckCircle2 } from "lucide-react"
+import { createClient } from "@/lib/supabase/client"
 
 interface PreferencesStepProps {
   onBack: () => void
@@ -29,13 +29,25 @@ export function PreferencesStep({ onBack }: PreferencesStepProps) {
   const handleComplete = async () => {
     setIsLoading(true)
     try {
+      const supabase = createClient()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) throw new Error("No user found")
+
       // Update theme preference
       await updateThemePreference(preferences.theme as "light" | "dark" | "system")
 
-      // Mark onboarding as complete
-      await completeOnboarding()
+      await supabase
+        .from("onboarding_progress")
+        .update({
+          completed: true,
+          completed_at: new Date().toISOString(),
+          step_completed: 3,
+        })
+        .eq("id", user.id)
 
-      // Redirect to dashboard
       router.push("/dashboard")
       router.refresh()
     } catch (error) {
